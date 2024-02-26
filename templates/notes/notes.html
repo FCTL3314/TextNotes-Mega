@@ -1,13 +1,92 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="text-primary">Notes</h1>
+    <div class="row d-flex">
+        <h1 class="fw-semibold mb-0" style="width: max-content">Notes</h1>
+        <div class="ms-auto d-flex align-items-center rounded-5" style="width: max-content">
+            <button class="btn btn-primary btn-action me-3">Add</button>
+            <button class="btn btn-danger btn-action">Remove</button>
+        </div>
+    </div>
+    <hr class="divider">
+    <div class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 bg-white rounded-4">
+        <div class="note-item">
+            <div class="d-flex">
+                <a class="note-item__title link-primary" href="#">Note Title</a>
+                <span class="ms-auto text-muted">2 days ago</span>
+            </div>
+            <hr class="divider my-1">
+            <p class="note-item__text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                A aliquam amet cumque delectus dolore dolorem earum eos est
+                et excepturi id impedit incidunt ipsum laborum laudantium
+                maiores molestiae nemo nisi odit pariatur quo recusandae
+                reiciendis reprehenderit repudiandae sunt veniam vero voluptas
+                voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam
+                repudiandae.
+            </p>
+        </div>
+        <button class="btn btn-outline-primary note__edit-btn">Edit</button>
+    </div>
 {% endblock %}
 
 {% block script %}
     <script>
         $(document).ready(function () {
-            console.log("Document is loaded");
+            const addNoteBtn = $("#addNoteBtn");
+            
+            addNoteBtn.on('click', addNote);
+            
+            function addNote() {
+                
+            }
         });
     </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        :root {
+            --note-item-height: 175px;
+            --common-rounding: 1rem;
+        }
+
+        .btn-action {
+            border-radius: 2rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .note-item {
+            border-top-left-radius: var(--common-rounding);
+            border-top-right-radius: var(--common-rounding);
+            width: 100%;
+            border: 1px var(--bs-secondary) solid;
+            border-bottom: 0;
+            padding: 0.375rem 0.75rem;
+            background-color: var(--bs-white);
+            overflow: hidden;
+        }
+
+        .note-item__title {
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .note-item__text {
+            display: block;
+            -webkit-box-orient: vertical;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            margin: 0;
+        }
+
+        .note__edit-btn {
+            width: 100%;
+            border-radius: 0 0 var(--common-rounding) var(--common-rounding);
+        }
+    </style>
 {% endblock %}
