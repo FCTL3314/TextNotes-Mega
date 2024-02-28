@@ -1,16 +1,67 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %} Notes {% endblock %}
 
 {% block content %}
-    <div class="row d-flex">
-        <h1 class="fw-semibold mb-0" style="width: max-content">Notes</h1>
-        <div class="ms-auto d-flex align-items-center rounded-5" style="width: max-content">
-            <button class="btn btn-primary btn-action me-3">Add</button>
-            <button class="btn btn-danger btn-action">Remove</button>
+    <div
+            id="addNoteModal"
+            class="modal fade"
+            tabindex="-1"
+            aria-labelledby="addNoteModalLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <form>
+                <div class="modal-content component">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 fw-semibold text-primary" id="addNoteModalLabel">
+                            Note creation
+                        </h1>
+                        <button
+                                class="btn-close"
+                                type="button"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        >
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="titleInput" class="form-label">Title</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="titleInput"
+                                    placeholder="Enter a note title..."
+                            >
+                        </div>
+                        <div class="mb-3">
+                            <label for="textInput" class="form-label">Text</label>
+                            <textarea
+                                    class="form-control"
+                                    id="textInput"
+                                    placeholder="Enter a note text..."
+                                    rows="6"
+                            >
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button
+                                id="addNoteBtn"
+                                type="submit"
+                                class="btn btn-outline-primary btn-action"
+                        >
+                            Create
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <hr class="divider">
-    <div class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 bg-white rounded-4">
-        <div class="note-item">
+    <div class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 bg-white rounded-5 shadow-sm">
+        <div class="note-item component shadow-none">
             <div class="d-flex">
                 <a class="note-item__title link-primary" href="#">Note Title</a>
                 <span class="ms-auto text-muted">2 days ago</span>
@@ -26,7 +77,7 @@
                 repudiandae.
             </p>
         </div>
-        <button class="btn btn-outline-primary note__edit-btn">Edit</button>
+        <button class="btn btn-outline-primary note__edit-btn fw-semibold border-0">Edit</button>
     </div>
 {% endblock %}
 
@@ -34,23 +85,25 @@
     <script>
         $(document).ready(function () {
             const addNoteBtn = $("#addNoteBtn");
-            
-            addNoteBtn.on('click', addNote);
-            
+            const removeNotesBtn = $("#removeNotesBtn");
+
             function addNote() {
-                
+
             }
+
+            addNoteBtn.on('click', addNote);
+
+            function initialize() {
+                hideLoading();
+            }
+
+            initialize();
         });
     </script>
 {% endblock %}
 
 {% block style %}
     <style>
-        :root {
-            --note-item-height: 175px;
-            --common-rounding: 1rem;
-        }
-
         .btn-action {
             border-radius: 2rem;
             padding-left: 1.5rem;
@@ -58,13 +111,10 @@
         }
 
         .note-item {
-            border-top-left-radius: var(--common-rounding);
-            border-top-right-radius: var(--common-rounding);
-            width: 100%;
-            border: 1px var(--bs-secondary) solid;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
             border-bottom: 0;
-            padding: 0.375rem 0.75rem;
-            background-color: var(--bs-white);
+            width: 100%;
             overflow: hidden;
         }
 

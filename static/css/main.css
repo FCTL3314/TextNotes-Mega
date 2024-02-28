@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: #F5F4FB;
+}
+
+.loading-overlay {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-overlay .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+.component {
+    border-radius: var(--bs-border-radius-xxl);
+    padding: 1rem;
+    background-color: var(--bs-white);
+    box-shadow: var(--bs-box-shadow-sm);
+}
+
+#footer {
+    background-color: var(--dark-purple) !important;
+}
