@@ -60,38 +60,99 @@
             </form>
         </div>
     </div>
-    <div class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 bg-white rounded-5 shadow-sm">
-        <div class="note-item component shadow-none">
-            <div class="d-flex">
-                <a class="note-item__title link-primary" href="#">Note Title</a>
-                <span class="ms-auto text-muted">2 days ago</span>
+    <div class="row">
+        <div
+                class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
+                data-note-id="1"
+        >
+            <div id="noteItem" class="bg-white rounded-5 shadow-sm">
+                <div class="note-content component shadow-none">
+                    <div class="d-flex">
+                        <a class="note-content__title link-primary" href="#">
+                            Note Title
+                        </a>
+                        <span class="ms-auto text-muted">2 days ago</span>
+                    </div>
+                    <hr class="divider my-1">
+                    <p class="note-content__text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        A aliquam amet cumque delectus dolore dolorem earum eos est
+                        et excepturi id impedit incidunt ipsum laborum laudantium
+                        maiores molestiae nemo nisi odit pariatur quo recusandae
+                        reiciendis reprehenderit repudiandae sunt veniam vero voluptas
+                        voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam
+                        repudiandae.
+                    </p>
+                </div>
+                <button id="selectNoteBtn" class="btn btn-outline-primary note__select-btn fw-semibold border-0">
+                    Select
+                </button>
             </div>
-            <hr class="divider my-1">
-            <p class="note-item__text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                A aliquam amet cumque delectus dolore dolorem earum eos est
-                et excepturi id impedit incidunt ipsum laborum laudantium
-                maiores molestiae nemo nisi odit pariatur quo recusandae
-                reiciendis reprehenderit repudiandae sunt veniam vero voluptas
-                voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam
-                repudiandae.
-            </p>
         </div>
-        <button class="btn btn-outline-primary note__edit-btn fw-semibold border-0">Edit</button>
+        <div
+                class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
+                data-note-id="1"
+        >
+            <div id="noteItem" class="bg-white rounded-5 shadow-sm">
+                <div class="note-content component shadow-none">
+                    <div class="d-flex">
+                        <a class="note-content__title link-primary" href="#">
+                            Note Title
+                        </a>
+                        <span class="ms-auto text-muted">2 days ago</span>
+                    </div>
+                    <hr class="divider my-1">
+                    <p class="note-content__text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        A aliquam amet cumque delectus dolore dolorem earum eos est
+                        et excepturi id impedit incidunt ipsum laborum laudantium
+                        maiores molestiae nemo nisi odit pariatur quo recusandae
+                        reiciendis reprehenderit repudiandae sunt veniam vero voluptas
+                        voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam
+                        repudiandae.
+                    </p>
+                </div>
+                <button id="selectNoteBtn" class="btn btn-outline-primary note__select-btn fw-semibold border-0">
+                    Select
+                </button>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
 {% block script %}
     <script>
         $(document).ready(function () {
-            const addNoteBtn = $("#addNoteBtn");
-            const removeNotesBtn = $("#removeNotesBtn");
+            const $addNoteBtn = $("#addNoteBtn");
+            const $removeNotesBtn = $("#removeNotesBtn");
+            const $selectNoteBtn = $(".note__select-btn")
 
             function addNote() {
 
             }
 
-            addNoteBtn.on('click', addNote);
+            $addNoteBtn.click(addNote);
+
+            function removeNotes() {
+
+            }
+
+            $removeNotesBtn.click(removeNotes);
+
+            function selectNote() {
+                const $noteItem = $(this).closest('#noteItem');
+                $noteItem.toggleClass("selected-note");
+
+                const $selectNoteBtn = $(this).closest("#selectNoteBtn")
+
+                if ($noteItem.hasClass("selected-note")) {
+                    $selectNoteBtn.text("Unselect");
+                } else {
+                    $selectNoteBtn.text("Select");
+                }
+            }
+
+            $selectNoteBtn.click(selectNote);
 
             function initialize() {
                 hideLoading();
@@ -110,7 +171,7 @@
             padding-right: 1.5rem;
         }
 
-        .note-item {
+        .note-content {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             border-bottom: 0;
@@ -118,12 +179,12 @@
             overflow: hidden;
         }
 
-        .note-item__title {
+        .note-content__title {
             font-weight: bold;
             text-decoration: none;
         }
 
-        .note-item__text {
+        .note-content__text {
             display: block;
             -webkit-box-orient: vertical;
             display: -webkit-box;
@@ -134,9 +195,24 @@
             margin: 0;
         }
 
-        .note__edit-btn {
+        .note__select-btn {
             width: 100%;
             border-radius: 0 0 var(--common-rounding) var(--common-rounding);
+        }
+
+        .note__select-btn:hover {
+            background-color: var(--bs-primary-bg-subtle);
+            color: var(--bs-primary);
+        }
+
+        .note__select-btn:active {
+            background-color: var(--bs-primary-border-subtle) !important;
+            color: var(--bs-primary) !important;
+        }
+
+        .selected-note {
+            outline: 3px solid var(--bs-primary-border-subtle);
+            transition: ease-in-out 0.1s;
         }
     </style>
 {% endblock %}
