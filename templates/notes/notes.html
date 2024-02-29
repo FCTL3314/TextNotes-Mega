@@ -134,7 +134,21 @@
             $addNoteBtn.click(addNote);
 
             function removeNotes() {
+                const idsToRemove = [];
+                const elementsToRemove = [];
 
+                $(".selected-note").each(function() {
+                    const $noteEl = $(this).parent();
+
+                    elementsToRemove.push($noteEl);
+                    idsToRemove.push($noteEl.data("noteId"))
+                });
+
+                elementsToRemove.forEach(function (el) {
+                    el.addClass("animate__animated animate__bounceOut");
+                    
+                    el.on("animationend", () => el.remove());
+                });
             }
 
             $removeNotesBtn.click(removeNotes);
