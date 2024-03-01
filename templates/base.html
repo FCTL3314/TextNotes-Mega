@@ -34,60 +34,15 @@
 <body>
 
 <div class="container py-3">
-    <div id="loadingWrapper" class="loading-wrapper">
-        <div id="loadingOverlay" class="loading-overlay">
-            <div class="spinner-border text-primary" role="status"></div>
-        </div>
-    </div>
-    <div class="component mb-3">
-        <div class="d-flex">
-            <h1 class="fw-semibold mb-0" style="width: max-content">
-                <span class="text-danger fw-bold">MEGA</span>
-                <span class="h2 text-dark-emphasis fw-semibold">Notes</span>
-            </h1>
-            <div class="ms-auto d-flex align-items-center" style="width: max-content">
-                <button
-                        class="btn btn-outline-primary btn-action fw-semibold me-3"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addNoteModal"
-                >
-                    Add
-                </button>
-                <button
-                        id="removeNotesBtn"
-                        class="btn btn-outline-danger btn-action fw-semibold me-3"
-                >
-                    Remove
-                </button>
-                <a class="btn btn-outline-dark btn-action fw-semibold">Settings</a>
-            </div>
-        </div>
-    </div>
+    {% include "other/loading_wrapper.html" %}
+
+    {% include "header.html" %}
 
     <div class="min-vh-100">
         {% block content %} {% endblock %}
     </div>
 
-    <div id="footer" class="component bg-dark text-white text-center">
-        <div class="footer">
-            <h2>About</h2>
-            <p>
-                The project is designed for integration with the MEGA cloud storage service. This service provides
-                the ability to create text files/notes and then save them to a connected MEGA account.
-            </p>
-            <hr class="divider border-2">
-            <small>
-                All rights reserved © 2023 - 2024
-                <a
-                        class="link-primary text-decoration-none"
-                        href="https://github.com/FCTL3314/TextNotes-Mega"
-                        target="_blank"
-                >
-                    MEGA Notes
-                </a>
-            </small>
-        </div>
-    </div>
+    {% include "footer.html" %}
 </div>
 
 {% block script %} {% endblock %}

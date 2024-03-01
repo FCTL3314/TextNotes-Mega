@@ -1,0 +1,79 @@
+<div
+        class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
+        data-note-id="1"
+>
+    <div class="note-item rounded-5 shadow-sm">
+        <div class="note-content component shadow-none">
+            <div class="d-flex">
+                <a class="note-content__title link-primary" href="#">
+                    {{ title }}
+                </a>
+                <span class="ms-auto text-muted">{{ created }}</span>
+            </div>
+            <div>
+                <hr class="divider my-1">
+                <p class="note-content__text">
+                    {{ text }}
+                </p>
+            </div>
+        </div>
+        <button
+                id="selectNoteBtn"
+                class="btn btn-outline-primary note__select-btn fw-semibold border-0"
+        >
+            Select
+        </button>
+    </div>
+</div>
+
+<style>
+    .note-item {
+        height: 100%;
+        background-color: var(--bs-white);
+    }
+
+    .note-content {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: 0;
+        width: 100%;
+        overflow: hidden;
+        padding-bottom: 0;
+    }
+
+    .note-content__title {
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .note-content__text {
+        display: block;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        margin: 0;
+    }
+
+    .note__select-btn {
+        width: 100%;
+        border-radius: 0 0 var(--common-rounding) var(--common-rounding);
+    }
+
+    .note__select-btn:hover {
+        background-color: var(--bs-primary-bg-subtle);
+        color: var(--bs-primary);
+    }
+
+    .note__select-btn:active {
+        background-color: var(--bs-primary-border-subtle) !important;
+        color: var(--bs-primary) !important;
+    }
+
+    .selected-note {
+        outline: 4px solid var(--bs-primary-border-subtle);
+        transition: ease-in-out 0.1s;
+    }
+</style>

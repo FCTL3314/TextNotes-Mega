@@ -4,119 +4,10 @@
 {% block title %} Notes {% endblock %}
 
 {% block content %}
-    <div
-            id="addNoteModal"
-            class="modal fade"
-            tabindex="-1"
-            aria-labelledby="addNoteModalLabel"
-            aria-hidden="true"
-    >
-        <div class="modal-dialog">
-            <form>
-                <div class="modal-content component">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 fw-semibold text-primary" id="addNoteModalLabel">
-                            Note creation
-                        </h1>
-                        <button
-                                class="btn-close"
-                                type="button"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                        >
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="titleInput" class="form-label">Title</label>
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    id="titleInput"
-                                    placeholder="Enter a note title..."
-                            >
-                        </div>
-                        <div class="mb-3">
-                            <label for="textInput" class="form-label">Text</label>
-                            <textarea
-                                    class="form-control"
-                                    id="textInput"
-                                    placeholder="Enter a note text..."
-                                    rows="6"
-                            >
-                            </textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <button
-                                id="addNoteBtn"
-                                type="submit"
-                                class="btn btn-outline-primary btn-action"
-                        >
-                            Create
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% include 'notes/inclusions/add_note_modal.html' %}
     <div class="row">
-        <div
-                class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
-                data-note-id="1"
-        >
-            <div id="noteItem" class="bg-white rounded-5 shadow-sm">
-                <div class="note-content component shadow-none">
-                    <div class="d-flex">
-                        <a class="note-content__title link-primary" href="#">
-                            Note Title
-                        </a>
-                        <span class="ms-auto text-muted">2 days ago</span>
-                    </div>
-                    <hr class="divider my-1">
-                    <p class="note-content__text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        A aliquam amet cumque delectus dolore dolorem earum eos est
-                        et excepturi id impedit incidunt ipsum laborum laudantium
-                        maiores molestiae nemo nisi odit pariatur quo recusandae
-                        reiciendis reprehenderit repudiandae sunt veniam vero voluptas
-                        voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam
-                        repudiandae.
-                    </p>
-                </div>
-                <button id="selectNoteBtn" class="btn btn-outline-primary note__select-btn fw-semibold border-0">
-                    Select
-                </button>
-            </div>
-        </div>
-        <div
-                class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
-                data-note-id="1"
-        >
-            <div id="noteItem" class="bg-white rounded-5 shadow-sm">
-                <div class="note-content component shadow-none">
-                    <div class="d-flex">
-                        <a class="note-content__title link-primary" href="#">
-                            Note Title
-                        </a>
-                        <span class="ms-auto text-muted">2 days ago</span>
-                    </div>
-                    <hr class="divider my-1">
-                    <p class="note-content__text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        A aliquam amet cumque delectus dolore dolorem earum eos est
-                        et excepturi id impedit incidunt ipsum laborum laudantium
-                        maiores molestiae nemo nisi odit pariatur quo recusandae
-                        reiciendis reprehenderit repudiandae sunt veniam vero voluptas
-                        voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam
-                        repudiandae.
-                    </p>
-                </div>
-                <button id="selectNoteBtn" class="btn btn-outline-primary note__select-btn fw-semibold border-0">
-                    Select
-                </button>
-            </div>
-        </div>
+        {% include 'notes/inclusions/note_card.html' with title="Note Title" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet cumque delectus dolore dolorem earum eos est et excepturi id impedit incidunt ipsum laborum laudantium maiores molestiae nemo nisi odit pariatur quo recusandae reiciendis reprehenderit repudiandae sunt veniam vero voluptas voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam repudiandae." created="2 days ago" %}
+        {% include 'notes/inclusions/note_card.html' with title="Note Title" text="Test" created="2 days ago" %}
     </div>
 {% endblock %}
 
@@ -137,7 +28,7 @@
                 const idsToRemove = [];
                 const elementsToRemove = [];
 
-                $(".selected-note").each(function() {
+                $(".selected-note").each(function () {
                     const $noteEl = $(this).parent();
 
                     elementsToRemove.push($noteEl);
@@ -146,7 +37,7 @@
 
                 elementsToRemove.forEach(function (el) {
                     el.addClass("animate__animated animate__bounceOut");
-                    
+
                     el.on("animationend", () => el.remove());
                 });
             }
@@ -154,10 +45,10 @@
             $removeNotesBtn.click(removeNotes);
 
             function selectNote() {
-                const $noteItem = $(this).closest('#noteItem');
+                const $noteItem = $(this).closest('.note-item');
                 $noteItem.toggleClass("selected-note");
 
-                const $selectNoteBtn = $(this).closest("#selectNoteBtn")
+                const $selectNoteBtn = $(this)
 
                 if ($noteItem.hasClass("selected-note")) {
                     $selectNoteBtn.text("Unselect");
@@ -175,58 +66,4 @@
             initialize();
         });
     </script>
-{% endblock %}
-
-{% block style %}
-    <style>
-        .btn-action {
-            border-radius: 2rem;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-
-        .note-content {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            border-bottom: 0;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .note-content__title {
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .note-content__text {
-            display: block;
-            -webkit-box-orient: vertical;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-            margin: 0;
-        }
-
-        .note__select-btn {
-            width: 100%;
-            border-radius: 0 0 var(--common-rounding) var(--common-rounding);
-        }
-
-        .note__select-btn:hover {
-            background-color: var(--bs-primary-bg-subtle);
-            color: var(--bs-primary);
-        }
-
-        .note__select-btn:active {
-            background-color: var(--bs-primary-border-subtle) !important;
-            color: var(--bs-primary) !important;
-        }
-
-        .selected-note {
-            outline: 3px solid var(--bs-primary-border-subtle);
-            transition: ease-in-out 0.1s;
-        }
-    </style>
 {% endblock %}
