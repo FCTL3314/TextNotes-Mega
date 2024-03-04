@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     # Library apps
     "rest_framework",
     # Custom apps
-    "notes"
+    "notes",
 ]
 
 MIDDLEWARE = [
