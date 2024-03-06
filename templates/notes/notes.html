@@ -5,21 +5,79 @@
 
 {% block content %}
     {% include 'notes/inclusions/add_note_modal.html' %}
-    <div class="row">
-        {% include 'notes/inclusions/note_card.html' with title="Note Title" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet cumque delectus dolore dolorem earum eos est et excepturi id impedit incidunt ipsum laborum laudantium maiores molestiae nemo nisi odit pariatur quo recusandae reiciendis reprehenderit repudiandae sunt veniam vero voluptas voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam repudiandae." created="2 days ago" %}
-        {% include 'notes/inclusions/note_card.html' with title="Note Title" text="Test" created="2 days ago" %}
-    </div>
+    <div id="notesWrp" class="row"></div>
 {% endblock %}
 
 {% block script %}
     <script>
         $(document).ready(function () {
+            const notes = [
+                {
+                    id: 1,
+                    title: "Note Title",
+                    text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet cumque delectus dolore dolorem earum eos est et excepturi id impedit incidunt ipsum laborum laudantium maiores molestiae nemo nisi odit pariatur quo recusandae reiciendis reprehenderit repudiandae sunt veniam vero voluptas voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam repudiandae.",
+                    created: "2 days ago",
+                },
+                {   
+                    id: 2,
+                    title: "Note Title",
+                    text: "Test",
+                    created: "2 days ago",
+                },
+            ];
+
+            function addNote(id, title, text, created) {
+                const noteHTML = `
+                    <div
+                        class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
+                        data-note-id="${id}"
+                    >
+                        <div class="note-item rounded-5 shadow-sm">
+                            <div class="note-content component shadow-none">
+                                <div class="d-flex mb-1">
+                                    <a class="note-content__title link-primary" href="#">
+                                        ${title}
+                                    </a>
+                                    <span class="ms-auto text-muted">${created}</span>
+                                </div>
+                                <div>
+                                    <p class="note-content__text">
+                                        ${text}
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                    class="btn btn-outline-primary note__select-btn fw-semibold border-0"
+                            >
+                                Select
+                            </button>
+                        </div>
+                    </div>
+                `
+
+                const $notesWrp = $('#notesWrp');
+                $notesWrp.append(noteHTML);
+            }
+
+            function renderNotes() {
+                for (const note of notes) {
+                    addNote(note.id, note.title, note.text, note.created);
+                }
+            }
+            
+            function initialize() {
+                renderNotes();
+                hideLoading();
+            }
+
+            initialize();
+            
             const $addNoteBtn = $("#addNoteBtn");
             const $removeNotesBtn = $("#removeNotesBtn");
-            const $selectNoteBtn = $(".note__select-btn")
+            const $selectNoteBtn = $(".note__select-btn");
 
-            function addNote() {
-
+            function handleAddNoteSubmit(event) {
+                event.preventDefault();
             }
 
             $addNoteBtn.click(addNote);
@@ -45,6 +103,7 @@
             $removeNotesBtn.click(removeNotes);
 
             function selectNote() {
+                console.log(123)
                 const $noteItem = $(this).closest('.note-item');
                 $noteItem.toggleClass("selected-note");
 
@@ -56,14 +115,14 @@
                     $selectNoteBtn.text("Select");
                 }
             }
-
+            
             $selectNoteBtn.click(selectNote);
-
-            function initialize() {
-                hideLoading();
-            }
-
-            initialize();
         });
     </script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        @import "{% static 'css/notes.css' %}";
+    </style>
 {% endblock %}
