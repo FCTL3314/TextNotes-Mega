@@ -5,6 +5,6 @@ from notes.api.views import TextNoteCreateAPIView, TextNoteDeleteAPIView
 app_name = "notes"
 
 urlpatterns = [
-    path("textnotes/create/", TextNoteCreateAPIView.as_view(), name="textnote_create"),
-    path("textnotes/delete/", TextNoteDeleteAPIView.as_view(), name="textnote_delete"),
+    path("notes/create/", TextNoteCreateAPIView.as_view(), name="note_create"),
+    path("notes/delete/", TextNoteDeleteAPIView.as_view(), name="note_delete"),
 ]

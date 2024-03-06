@@ -18,7 +18,7 @@
                     text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam amet cumque delectus dolore dolorem earum eos est et excepturi id impedit incidunt ipsum laborum laudantium maiores molestiae nemo nisi odit pariatur quo recusandae reiciendis reprehenderit repudiandae sunt veniam vero voluptas voluptate voluptates, voluptatibus? Aliquam at nisi quam quibusdam repudiandae.",
                     created: "2 days ago",
                 },
-                {   
+                {
                     id: 2,
                     title: "Note Title",
                     text: "Test",
@@ -64,14 +64,14 @@
                     addNote(note.id, note.title, note.text, note.created);
                 }
             }
-            
+
             function initialize() {
                 renderNotes();
                 hideLoading();
             }
 
             initialize();
-            
+
             const $addNoteBtn = $("#addNoteBtn");
             const $removeNotesBtn = $("#removeNotesBtn");
             const $selectNoteBtn = $(".note__select-btn");
@@ -93,17 +93,31 @@
                     idsToRemove.push($noteEl.data("noteId"))
                 });
 
-                elementsToRemove.forEach(function (el) {
-                    el.addClass("animate__animated animate__bounceOut");
-
-                    el.on("animationend", () => el.remove());
+                $.ajax({
+                    url: "/notes/api/notes/delete/",
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        ...getCSRFHeader(),
+                    },
+                    data: JSON.stringify({
+                        ids: idsToRemove,
+                    }),
+                    success: function () {
+                        elementsToRemove.forEach(function (el) {
+                            el.addClass("animate__animated animate__bounceOut");
+                            el.on("animationend", () => el.remove());
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    },
                 });
             }
 
             $removeNotesBtn.click(removeNotes);
 
             function selectNote() {
-                console.log(123)
                 const $noteItem = $(this).closest('.note-item');
                 $noteItem.toggleClass("selected-note");
 
@@ -115,7 +129,7 @@
                     $selectNoteBtn.text("Select");
                 }
             }
-            
+
             $selectNoteBtn.click(selectNote);
         });
     </script>

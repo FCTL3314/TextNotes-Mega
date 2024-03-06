@@ -1,13 +1,16 @@
-from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, DestroyAPIView
+from rest_framework.request import Request
 from rest_framework.response import Response
 
+from notes.api.serializers import TextNoteDeleteManySerializer, TextNoteSerializer
 from notes.models import TextNote
 
 
 class TextNoteCreateAPIView(CreateAPIView):
-    def create(self, request, *args, **kwargs):
+    serializer_class = TextNoteSerializer
+
+    def create(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -18,11 +21,13 @@ class TextNoteCreateAPIView(CreateAPIView):
 
 
 class TextNoteDeleteAPIView(DestroyAPIView):
-    def delete(self, request, *args, **kwargs):
-        ids_string = request.GET.get("ids", "")
-        ids = ids_string.split(",")
+    serializer_class = TextNoteDeleteManySerializer
 
-        notes_to_delete = TextNote.objects.filter(id__in=ids)
+    def delete(self, request: Request, *args, **kwargs) -> Response:
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        deleted_notes_count = notes_to_delete.delete()
-        return JsonResponse({"deleted_notes_count": deleted_notes_count})
+        ids = serializer.validated_data["ids"]
+        TextNote.objects.filter(id__in=ids).delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
