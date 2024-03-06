@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.response import Response
@@ -18,13 +19,10 @@ class TextNoteCreateAPIView(CreateAPIView):
 
 class TextNoteDeleteAPIView(DestroyAPIView):
     def delete(self, request, *args, **kwargs):
-        ids = request.GET.getlist("ids")
-        deleted_notes = []
-        for note_id in ids:
-            try:
-                note = TextNote.objects.get(id=note_id)
-                note.delete()
-                deleted_notes.append(note_id)
-            except TextNote.DoesNotExist:
-                pass
-        return Response({"deleted_notes": deleted_notes})
+        ids_string = request.GET.get("ids", "")
+        ids = ids_string.split(",")
+
+        notes_to_delete = TextNote.objects.filter(id__in=ids)
+
+        deleted_notes_count = notes_to_delete.delete()
+        return JsonResponse({"deleted_notes_count": deleted_notes_count})
