@@ -46,6 +46,7 @@
                             id="addNoteBtn"
                             type="submit"
                             class="btn btn-outline-primary btn-action"
+                            data-bs-dismiss="modal"
                     >
                         Create
                     </button>
@@ -54,6 +55,50 @@
         </form>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        const $addNoteBtn = $("#addNoteBtn");
+
+        function handleAddNoteSubmit(event) {
+            showLoading();
+
+            event.preventDefault();
+
+            const $titleInput = $("#titleInput");
+            const $textInput = $("#textInput");
+
+            $.ajax({
+                url: "/notes/api/notes/create/",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...getCSRFHeader(),
+                },
+                data: JSON.stringify({
+                    title: $titleInput.val(),
+                    text: $textInput.val(),
+                }),
+                success: function (note) {
+                    prependNote(
+                        note.id,
+                        note.title,
+                        note.text,
+                        moment(note.created_at).fromNow(),
+                    );
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+                    hideLoading();
+                }
+            });
+        }
+
+        $addNoteBtn.click(handleAddNoteSubmit);
+    })
+</script>
 
 <style>
     .underline-input {

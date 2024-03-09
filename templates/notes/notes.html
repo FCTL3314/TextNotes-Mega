@@ -24,44 +24,17 @@
                     text: "Test",
                     created: "2 days ago",
                 },
+                {
+                    id: 3,
+                    title: "Note Title",
+                    text: "Test",
+                    created: "2 days ago",
+                },
             ];
-
-            function addNote(id, title, text, created) {
-                const noteHTML = `
-                    <div
-                        class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
-                        data-note-id="${id}"
-                    >
-                        <div class="note-item rounded-5 shadow-sm">
-                            <div class="note-content component shadow-none">
-                                <div class="d-flex mb-1">
-                                    <a class="note-content__title link-primary" href="#">
-                                        ${title}
-                                    </a>
-                                    <span class="ms-auto text-muted">${created}</span>
-                                </div>
-                                <div>
-                                    <p class="note-content__text">
-                                        ${text}
-                                    </p>
-                                </div>
-                            </div>
-                            <button
-                                    class="btn btn-outline-primary note__select-btn fw-semibold border-0"
-                            >
-                                Select
-                            </button>
-                        </div>
-                    </div>
-                `
-
-                const $notesWrp = $('#notesWrp');
-                $notesWrp.append(noteHTML);
-            }
 
             function renderNotes() {
                 for (const note of notes) {
-                    addNote(note.id, note.title, note.text, note.created);
+                    appendNote(note.id, note.title, note.text, note.created);
                 }
             }
 
@@ -71,66 +44,6 @@
             }
 
             initialize();
-
-            const $addNoteBtn = $("#addNoteBtn");
-            const $removeNotesBtn = $("#removeNotesBtn");
-            const $selectNoteBtn = $(".note__select-btn");
-
-            function handleAddNoteSubmit(event) {
-                event.preventDefault();
-            }
-
-            $addNoteBtn.click(addNote);
-
-            function removeNotes() {
-                const idsToRemove = [];
-                const elementsToRemove = [];
-
-                $(".selected-note").each(function () {
-                    const $noteEl = $(this).parent();
-
-                    elementsToRemove.push($noteEl);
-                    idsToRemove.push($noteEl.data("noteId"))
-                });
-
-                $.ajax({
-                    url: "/notes/api/notes/delete/",
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        ...getCSRFHeader(),
-                    },
-                    data: JSON.stringify({
-                        ids: idsToRemove,
-                    }),
-                    success: function () {
-                        elementsToRemove.forEach(function (el) {
-                            el.addClass("animate__animated animate__bounceOut");
-                            el.on("animationend", () => el.remove());
-                        });
-                    },
-                    error: function (error) {
-                        console.log(error)
-                    },
-                });
-            }
-
-            $removeNotesBtn.click(removeNotes);
-
-            function selectNote() {
-                const $noteItem = $(this).closest('.note-item');
-                $noteItem.toggleClass("selected-note");
-
-                const $selectNoteBtn = $(this)
-
-                if ($noteItem.hasClass("selected-note")) {
-                    $selectNoteBtn.text("Unselect");
-                } else {
-                    $selectNoteBtn.text("Select");
-                }
-            }
-
-            $selectNoteBtn.click(selectNote);
         });
     </script>
 {% endblock %}
