@@ -6,7 +6,7 @@
         aria-hidden="true"
 >
     <div class="modal-dialog">
-        <form>
+        <form id="addNoteForm">
             <div class="modal-content component p-0">
                 <div class="modal-header border-bottom-0">
                     <h1 class="modal-title fs-5 fw-semibold text-primary" id="addNoteModalLabel">
@@ -28,6 +28,8 @@
                                 class="form-control underline-input"
                                 id="titleInput"
                                 placeholder="Enter a note title..."
+                                autocomplete="off"
+                                required
                         >
                     </div>
                     <div class="mb-3">
@@ -37,8 +39,9 @@
                                 id="textInput"
                                 placeholder="Enter a note text..."
                                 rows="6"
-                        >
-                            </textarea>
+                                autocomplete="off"
+                                required
+                        ></textarea>
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
@@ -46,7 +49,6 @@
                             id="addNoteBtn"
                             type="submit"
                             class="btn btn-outline-primary btn-action"
-                            data-bs-dismiss="modal"
                     >
                         Create
                     </button>
@@ -58,16 +60,23 @@
 
 <script>
     $(document).ready(function () {
-        const $addNoteBtn = $("#addNoteBtn");
+        const $createNoteModal = $('#addNoteModal');
+        const $addNoteForm = $("#addNoteForm");
 
         function handleAddNoteSubmit(event) {
-            showLoading();
-
             event.preventDefault();
+
+            showLoading();
 
             const $titleInput = $("#titleInput");
             const $textInput = $("#textInput");
-
+            
+            if ($titleInput.val().trim() === "" || $textInput.val().trim() === "") {
+                alert("The Title and Text fields must be filled in.");
+                hideLoading();
+                return;
+            }
+            
             $.ajax({
                 url: "/notes/api/notes/create/",
                 method: "POST",
@@ -92,11 +101,12 @@
                 },
                 complete: function () {
                     hideLoading();
+                    $createNoteModal.modal('hide');
                 }
             });
         }
 
-        $addNoteBtn.click(handleAddNoteSubmit);
+        $addNoteForm.submit(handleAddNoteSubmit);
     })
 </script>
 

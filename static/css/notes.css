@@ -45,6 +45,10 @@
 }
 
 .selected-note {
-    outline: 4px solid var(--bs-primary-border-subtle);
+    outline: var(--note-highlight-thickness) solid var(--bs-primary-border-subtle);
     transition: ease-in-out 0.1s;
+}
+
+.note-item:hover:not(.selected-note) {
+    outline: var(--note-highlight-thickness) solid var(--bs-secondary-bg);
 }

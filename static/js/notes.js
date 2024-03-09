@@ -2,10 +2,10 @@ const $removeNotesBtn = $("#removeNotesBtn");
 
 const NOTE_APPEARING_ANIMATION_CLASS = "animate__animated animate__fadeIn"
 
-function createNoteHTML(id, title, text, created, with_animation=true) {
+function createNoteHTML(id, title, text, created) {
     return `
         <div
-            class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3 ${with_animation ? NOTE_APPEARING_ANIMATION_CLASS : ""}"
+            class="col-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"
             data-note-id="${id}"
         >
             <div class="note-item rounded-5 shadow-sm">
@@ -48,6 +48,7 @@ function selectNote() {
 function createNoteElements(id, title, text, created, with_animation= true) {
     const $note = $(createNoteHTML(id, title, text, created, with_animation));
     if (with_animation) {
+        $note.addClass(NOTE_APPEARING_ANIMATION_CLASS)
         $note.on("animationend", () => $note.removeClass(NOTE_APPEARING_ANIMATION_CLASS));
     }
     const $selectBtn = $note.find(".note__select-btn");
